@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // ✅ Updated import
 import { CentredContainer } from "../../components/auth/CentredContainer";
 import { AuthHeader } from "../../components/auth/AuthHeader";
 import { AuthBottomRedirect } from "../../components/auth/AuthBottomRedirect";
@@ -20,14 +20,14 @@ export default function Signup() {
   const [showErrors, setShowErrors] = useState(false);
   const { signup } = useAuth();
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate(); // ✅ Replaced useHistory with useNavigate
 
   async function onSubmit(data) {
     try {
       setLoading(true);
       await signup(data.email, data.password);
       setLoading(false);
-      history.push("/");
+      navigate("/"); // ✅ Updated from history.push("/") to navigate("/")
     } catch (e) {
       if (e.message.endsWith("(auth/email-already-in-use).")) {
         showAlert(
@@ -86,9 +86,9 @@ export default function Signup() {
                       ? true
                       : "Password should be at-least 6 characters",
                   matchPattern: (value) =>
-                    /(?=.*[A-Z])/.test(value) // /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(value)
+                    /(?=.*[A-Z])/.test(value)
                       ? true
-                      : "Password should contain at least one uppercase letter", // "Password should contain at least one uppercase letter, lowercase letter, digit, and special symbol",
+                      : "Password should contain at least one uppercase letter",
                 },
               }),
               placeholder: "Enter Password",

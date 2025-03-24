@@ -1,5 +1,5 @@
 import { User } from "lucide-react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { ALERT_CLASSES } from "../constants";
 import { useAlert } from "../contexts/AlertContext";
@@ -7,12 +7,12 @@ import { useAlert } from "../contexts/AlertContext";
 export default function NavBar() {
   const { showAlert } = useAlert();
   const { currentUser, logout } = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   async function handleLogout() {
     try {
       await logout();
-      history.push("/login");
+      navigate("/login");
       showAlert(ALERT_CLASSES.SUCCESS, "Successfully logged out.");
     } catch {
       showAlert(ALERT_CLASSES.ERROR, "Failed to log out.");
