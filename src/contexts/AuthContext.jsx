@@ -8,9 +8,11 @@ AuthProvider.propTypes = {
 
 const AuthContext = createContext();
 
-export function useAuth() {
+const useAuth = () => {
   return useContext(AuthContext);
-}
+};
+
+export { useAuth };
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
@@ -20,8 +22,32 @@ export function AuthProvider({ children }) {
     return auth.createUserWithEmailAndPassword(email, password);
   }
 
-  function login(email, password) {
-    return auth.signInWithEmailAndPassword(email, password);
+  // Enhanced login function with retry mechanism
+  async function login(email, password) {
+    const maxRetries = 3;
+    let lastError = null;
+    
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        return await auth.signInWithEmailAndPassword(email, password);
+      } catch (error) {
+        console.log(`Login attempt ${attempt + 1} failed:`, error.code);
+        lastError = error;
+        
+        // Only retry for network-related errors
+        if (!['auth/network-request-failed', 'auth/timeout'].includes(error.code)) {
+          throw error; // Don't retry for auth errors like wrong password
+        }
+        
+        // Wait before retrying (exponential backoff)
+        if (attempt < maxRetries - 1) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
+        }
+      }
+    }
+    
+    // If we've exhausted all retries
+    throw lastError;
   }
 
   function logout() {
