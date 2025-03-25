@@ -1,121 +1,63 @@
+import { User, LogOut, Cloud } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
-import { CentredContainer } from "../../components/auth/CentredContainer";
-import { AuthHeader } from "../../components/auth/AuthHeader";
-import { AuthBottomRedirect } from "../../components/auth/AuthBottomRedirect";
-import { useForm } from "react-hook-form";
-import { PasswordInput } from "../../components/auth/PasswordInput";
-import { useAlert } from "../../contexts/AlertContext";
-import { ALERT_CLASSES } from "../../constants";
+import { showSuccessToast, showErrorToast } from "../utils/toast";
 
-export default function Login() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const { showAlert } = useAlert();
-  const [showErrors, setShowErrors] = useState(false);
-  const { login } = useAuth();
-  const [loading, setLoading] = useState(false);
+export default function NavBar() {
+  const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  async function onSubmit(data) {
+  async function handleLogout() {
     try {
-      setLoading(true);
-      await login(data.email, data.password);
-      setLoading(false);
-      navigate("/");
+      await logout();
+      navigate("/login");
+      showSuccessToast("Successfully logged out.");
     } catch {
-      showAlert(ALERT_CLASSES.ERROR, "Failed to log in.");
-      setTimeout(() => {
-        setLoading(false);
-      }, 300);
+      showErrorToast("Failed to log out.");
     }
   }
 
   return (
-    <CentredContainer>
-      <AuthHeader title="Login" subtitle="Hi, Welcome back 👋" />
-
-      {/* <div>
-        <button className="my-3 flex w-full items-center justify-center space-x-2 rounded-lg border border-slate-200 py-3 text-center text-slate-700 transition duration-150 hover:border-slate-400 hover:text-slate-900 hover:shadow">
-          <img
-            src="https://www.svgrepo.com/show/355037/google.svg"
-            className="h-6 w-6"
-            alt=""
-          />{" "}
-          <span>Login with Google</span>
-        </button>
+    <div className="sticky top-0 z-10 border-b border-gray-200 bg-white shadow-sm">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 justify-between">
+          <div className="flex flex-shrink-0 items-center">
+            <Cloud className="h-6 w-6 text-indigo-600" />
+            <span className="px-2 text-xl font-semibold text-gray-900">PersonalCloud</span>
+          </div>
+          <div className="flex items-center">
+            <div className="relative ml-3">
+              <div>
+                <button
+                  type="button"
+                  className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  onClick={() => setMenuOpen(!menuOpen)}
+                >
+                  <User className="h-8 w-8 rounded-full bg-gray-100 p-1 text-gray-500 hover:bg-gray-200" />
+                </button>
+              </div>
+              {menuOpen && (
+                <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                  {currentUser && (
+                    <div className="block border-b border-gray-200 px-4 py-2 text-sm text-gray-500">
+                      <div className="truncate">{currentUser.email}</div>
+                    </div>
+                  )}
+                  <button 
+                    onClick={handleLogout}
+                    className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-
-      <span className="w-full text-center text-lg text-slate-500">Or</span> */}
-
-      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label className="label">
-            <span className="label-text text-base">Email</span>
-          </label>
-          <input
-            {...register("email", {
-              required: "Email is required.",
-              pattern: {
-                value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-                message: "Email is not valid",
-              },
-            })}
-            type="text"
-            autoComplete="email"
-            placeholder="Email Address"
-            className={
-              "input input-bordered w-full" +
-              (showErrors && errors.email ? " input-error" : "")
-            }
-          />
-          {showErrors && errors.email && (
-            <p className="text-error">{errors.email.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="label">
-            <span className="label-text text-base">Password</span>
-          </label>
-          <PasswordInput
-            inputParams={{
-              ...register("password", {
-                required: "Password is required",
-              }),
-              placeholder: "Enter Password",
-              autoComplete: "current-password",
-            }}
-            hasError={showErrors && errors.password}
-          />
-          {showErrors && errors.password && (
-            <p className="text-error">{errors.password.message}</p>
-          )}
-        </div>
-
-        <div className="link link-primary p-1 hover:text-neutral-900">
-          <Link to="/forgot-password">Forgot Password?</Link>
-        </div>
-
-        <button
-          disabled={loading}
-          className="btn btn-primary btn-block"
-          type="submit"
-          onClick={() => setShowErrors(true)}
-        >
-          {loading && <span className="loading loading-spinner" />}
-          Login
-        </button>
-
-        <AuthBottomRedirect
-          text="Not registered yet?"
-          linkText="Register now"
-          linkTo="/signup"
-        />
-      </form>
-    </CentredContainer>
+    </div>
   );
 }
