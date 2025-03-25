@@ -1,4 +1,4 @@
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
 export function PasswordInput(params) {
@@ -7,22 +7,22 @@ export function PasswordInput(params) {
     <div className="relative">
       <input
         {...params.inputParams}
-        className={
-          "input input-bordered w-full pr-9" +
-          (params.hasError ? " input-error" : "")
-        }
+        className={`block w-full rounded-lg border px-4 py-3 text-gray-900 shadow-sm transition-colors focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 pr-12 ${
+          params.hasError ? "border-red-300 bg-red-50" : "border-gray-300 bg-white"
+        }`}
         type={showPassword ? "text" : "password"}
       />
-      <div
-        className="absolute bottom-0 right-0 top-0 flex cursor-pointer items-center pr-3"
+      <button
+        type="button"
+        className="absolute bottom-0 right-0 top-0 flex cursor-pointer items-center justify-center px-3 text-gray-400 hover:text-gray-500"
         onClick={() => setShowPassword((show) => !show)}
       >
         {showPassword ? (
-          <EyeIcon size={15} className="stroke-slate-400" />
+          <Eye className="h-5 w-5" />
         ) : (
-          <EyeOffIcon size={15} className="stroke-slate-400" />
+          <EyeOff className="h-5 w-5" />
         )}
-      </div>
+      </button>
     </div>
   );
 }
