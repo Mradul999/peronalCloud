@@ -1,12 +1,35 @@
-# React + Vite
+# PersonelCloud
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, secure cloud storage solution for personal files and documents.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Secure Authentication**: Email/password authentication powered by Firebase
+- **File Management**: Upload, view, and delete files
+- **Folder Organization**: Create, rename and delete folders to organize your content
+- **User-friendly Interface**: Clean and intuitive design with responsive layout
 
-## Expanding the ESLint configuration
+- **Toast Notifications**: Provides clear feedback for user actions
+- **Mobile-Friendly**: Works seamlessly across devices of all sizes
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Technology Stack
+
+- **Frontend**: React.js with React Router for navigation
+- **Authentication**: Firebase Authentication
+- **Storage**: Firebase Storage for file management
+- **Database**: Firebase Firestore for data persistence
+- **UI Components**: Custom components with Tailwind CSS
+- **Icons**: Lucide React for beautiful SVG icons
+- **Form Handling**: React Hook Form for form validation and submission
+- **Notifications**: React Hot Toast for user notifications
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- [Firebase](https://firebase.google.com/) for authentication and storage
+- [React Router](https://reactrouter.com/) for navigation
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [Lucide Icons](https://lucide.dev/) for beautiful icons
