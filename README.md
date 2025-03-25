@@ -36,5 +36,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Live Demo
 
-peronal-cloud.vercel.app
+http://personal-cloud-project.vercel.app
 
