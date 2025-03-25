@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthContext";
 import { showSuccessToast, showErrorToast } from "../../utils/toast";
+import { NavLink } from "react-router-dom";
 
 export default function ForgotPassword() {
   const {
@@ -82,11 +83,15 @@ export default function ForgotPassword() {
         </div>
       </form>
 
-      <AuthBottomRedirect
-        text="Remember your password?"
-        linkText="Log In"
-        to="/login"
-      />
+      <div className="mt-6 text-center text-gray-700">
+        Remember your password?{" "}
+        <NavLink
+          to="/login"
+          className="font-semibold text-indigo-600 transition duration-200 hover:text-indigo-700"
+        >
+          Login
+        </NavLink>
+      </div>
     </CentredContainer>
   );
 }
